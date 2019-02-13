@@ -1,0 +1,15 @@
+#Turn the rewrite engine on to tell apache we want to rewrite the URL
+RewriteEngine On
+
+#Execute the next rewriterule only if rewritecond is true
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-l
+
+#Specify what rewriting rule we want to use
+# ^(.+)$ matches any URL except the server root will be
+# rewritten as index.php?url=$1
+# QSA means if there is a query string passed with the
+# original URL, it will be appended to the rewrite
+# L means if the rule matches, don't process any more rewrite rules below this one
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]

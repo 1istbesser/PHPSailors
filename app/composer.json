@@ -1,0 +1,21 @@
+{
+    "name" : "PHPSailors/PHPSailors",
+    "type" : "project",
+    "authors" : [
+      {
+        "name" : "Tamer Altintop",
+        "email" : "tamer.altintop@gmail.com"
+      }
+    ],
+    "require" : {
+      "composer/composer" : "^1.6",
+      "symfony/routing": "^4.2",
+      "symfony/http-foundation": "^4.2",
+        "twig/twig": "^2.6"
+    },
+    "autoload" : {
+      "psr-4" : {
+        "PHPSailors\\" : "src"
+      }
+    }
+  }
