@@ -8,10 +8,17 @@ class HomeController extends Controller{
     public function __construct()
     {
         parent::__construct();
-        $this->service = new MainService();
+        try{
+            $this->service = new MainService();
+        } catch(\Exception $e){
+            error_log("Database is offline.");
+            header("location: /offline");
+            exit;
+        }
     }
-    public function showhomePage($parameters){
-        $products = $this->service->getAllProducts();
-        echo $this->getTwig()->render('index.html.twig', ['products' => $products] );
+    public function showHomePage($parameters){
+        $this->setView();
+        $this->renderview('index', [
+        ]);
     }
 }

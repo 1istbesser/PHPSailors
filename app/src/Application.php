@@ -55,6 +55,8 @@ class Application{
         catch (ResourceNotFoundException $e)
         {
             error_log($e->getMessage());
+            header("location: /404");
+            exit;
         }
     }
 

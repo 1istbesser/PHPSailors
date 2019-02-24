@@ -3,7 +3,7 @@ namespace PHPSailors\Config;
 
 class DatabaseConfig{
     private  $host             = 'localhost';
-    private  $db               = 'delbox';
+    private  $db               = 'database';
     private  $user             = 'root';
     private  $password         = '';
 

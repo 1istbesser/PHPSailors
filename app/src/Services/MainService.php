@@ -10,17 +10,14 @@ class MainService extends Service{
 
     public function __construct()
     {
-        try {
-            $this->database = Database::getInstance();
-            $this->connection = $this->database->getConnection();
-        } catch (\Exception $e) {
-            throw new \Exception('Database is offline.');
-        }
+        $this->database = Database::getInstance();
+        $this->connection = $this->database->getConnection();
     }
 
     public function getAllProducts()
     {
-        $query = "Select * from `produse`";
+        /* Example of query */
+        $query = "Select * from `product` limit 25";
         $stmt = $this->connection->prepare($query);
         $stmt->execute([]);
         $result = $stmt->fetchAll(PDO::FETCH_OBJ);

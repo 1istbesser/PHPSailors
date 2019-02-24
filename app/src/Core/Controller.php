@@ -2,21 +2,42 @@
 namespace PHPSailors\Core;
 
 class Controller{
-    private $loader;
-    private $twig;
+    private $view;
 
     public function __construct()
     {   
-        // Specify our Twig templates location
-        $this->loader = new \Twig_Loader_Filesystem(TEMPLATES);
 
-        // Instantiate our Twig
-        $this->twig = new \Twig_Environment($this->loader);
     }
-    public function getLoader(){
-        return $this->loader;
+    public function setView():void{
+        $this->view = new View();
     }
-    public function getTwig(){
-        return $this->twig;
+
+    public function renderView($view_file_name, $view_data):void{
+        $this->view->renderView($view_file_name, $view_data);
+    }
+
+    public function getView():View{
+        return $this->view;
+    }
+
+    public function isLoggedIn(){
+        if(session_status() === PHP_SESSION_NONE){
+            session_start();
+        }
+        if( !isset($_SESSION['user']) || empty($_SESSION['user']) ){
+            header("location: /login");
+            exit;
+        }
+    }
+
+    public function isAuthorisedToConfigure(){
+        if(session_status() === PHP_SESSION_NONE){
+            session_start();
+        }
+        if($_SESSION['group'] === "admin"){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
