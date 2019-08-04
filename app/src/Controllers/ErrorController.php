@@ -1,7 +1,6 @@
 <?php 
 namespace PHPSailors\Controllers;
 use PHPSailors\Core\Controller;
-use PHPSailors\Services\MainService;
 
 class ErrorController extends Controller{
     public function __construct()
@@ -9,14 +8,19 @@ class ErrorController extends Controller{
         parent::__construct();
     }
 
-    public function showOfflinePage($parameters){
+    public function getOfflinePage($parameters){
         $this->setView();
         $this->renderview('error/offline', [
         ]);
     }
-    public function showNotFoundPage($parameters){
+    public function getNotFoundPage($parameters){
         $this->setView();
         $this->renderview('error/404', [
+        ]);
+    }
+    public function getInternalErrorPage($parameters){
+        $this->setView();
+        $this->renderview('error/500', [
         ]);
     }
 }

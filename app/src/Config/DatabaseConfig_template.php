@@ -1,11 +1,16 @@
 <?php
 namespace PHPSailors\Config;
 
+/* 
+Duplicate the file, fill in your database connection details 
+and remove the "_template" part of the filename.
+*/
+
 class DatabaseConfig{
-    private  $host             = 'localhost';
+    private  $host             = 'host';
     private  $db               = 'database';
-    private  $user             = 'root';
-    private  $password         = '';
+    private  $user             = 'user';
+    private  $password         = 'password';
 
     public function __construct(){}
         

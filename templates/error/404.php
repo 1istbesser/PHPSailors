@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">  
-    <title>PHPSailors</title>
+        <?php require_once(TEMPLATES.'_head.php'); ?>
+        <title>PHPSailors - Index page</title>
     </head>
     <body>
+
+        <?php require_once(TEMPLATES."_nav.php"); ?>
 
         <div class="container my-5">
             <div class="row">
@@ -16,5 +17,6 @@
             </div>
         </div>
 
+        <?php require_once(TEMPLATES."_scripts.php"); ?>
     </body>
 </html>

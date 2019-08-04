@@ -1,49 +1,137 @@
 <?php 
 use PHPSailors\Application;
 use Symfony\Component\Routing\Route;
-require_once('../app/vendor/autoload.php');
 
+/*
+    Define here any global constants you may want to use throughout your application, 
+    however, please limit the usage of "define" and instead use "const" to define 
+    constants within classes.
+
+    TEMPLATES -> /templates
+*/
 define('TEMPLATES', dirname(__DIR__).DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR);
+define('ADMINISTRATOREMAIL', "tamer.altintop@gmail.com");
+
+
+/*
+    The application depends on a few components installed through Composer, therefore 
+    if you didn't run "composer install" within the /app directory of your project, 
+    an internal error with a clear message should be the exit point. 
+*/
+$internalServerErrorTemplate = "
+<h1>Internal Server Error</h1>
+<p>The server has encountered an internal error or misconfiguration and was unable to compelte your request.</p>
+<p>Please contact the server administrator at ". ADMINISTRATOREMAIL. " and inform them of the time and URL of the occured error.</p>
+";
+
+
+if(file_exists('../app/vendor/autoload.php')){
+    require_once('../app/vendor/autoload.php');
+} else {
+    error_log("Error path: /public_html/index.php");
+    error_log("/app/vendor/autoload.php doesn't exist. Run composer install inside root/app of your app.");
+    echo $internalServerErrorTemplate;
+    http_response_code(500);
+    exit;
+}
+
 
 $app = new Application();
 
- // Init basic route
-$home = new Route(
-    '/',
-    array('controller' => 'HomeController', 'method'=>'showHomePage')
-);
-$offline = new Route(
-    '/offline',
-    array('controller' => 'ErrorController', 'method'=>'showOfflinePage')
-);
-$notFound = new Route(
-    '/404',
-    array('controller' => 'ErrorController', 'method'=>'showNotFoundPage')
-);
-// Init route with dynamic placeholders examples
-// $categoryByID = new Route(
-//     '/category/{id}',
-//     array('controller' => 'CategoryController', 'method'=>'getCategoryByID'),
-//     array('id' => '[0-9]+')
-// );
-// $productsByCategoryID = new Route(
-//     '/category/{id}/products',
-//     array('controller' => 'CategoryController', 'method'=>'getProductsByCategoryID'),
-//     array('id' => '[0-9]+')
-// );
-// $productByIDFromCategory = new Route(
-//     '/category/{id}/products/{id_product}',
-//     array('controller' => 'CategoryController', 'method'=>'getProductByIdFromCategory'),
-//     array('id' => '[0-9]+')
-// );
 
-// Add Route object(s) to RouteCollection object      
-$app->addRoute('home', $home);
-$app->addRoute('offline', $offline);
-$app->addRoute('notFound', $notFound);
+/* 
+    Declare all routes below 
+
+    Inside the Route object, you must specify the following:
+    - The route name,
+    - The URI with any parameters between curly brackets,
+    - An array with the controller and the method name,
+    - Depending on your number of parameters, other arrays matching the 
+    parameter name to a regular expression.
+
+    Example:
+    $app->addRoute("routeName", new Route('/route-URI/{paramName}', 
+        array('controller' => 'ControllerName', 'method' =>  'MethodName'),
+        array('paramName' => '[0-9]+')
+    ));
+*/
+
+
+/* 
+    Front end pages
+*/
+$app->addRoute("index", new Route(
+    '/',
+    array('controller' => 'PagesController', 'method'=>'getIndex')
+));
+$app->addRoute("privacyPolicy", new Route(
+    '/install',
+    array('controller' => 'InstallController', 'method'=>'installApp')
+));
+$app->addRoute("registerGET", new Route(
+    '/register',
+    array('controller' => 'AuthenticationController', 'method'=>'getRegister'),
+    array(),
+    array(),
+    '',
+    array(),
+    array("GET")
+));
+$app->addRoute("registerPOST", new Route(
+    '/register',
+    array('controller' => 'AuthenticationController', 'method'=>'postRegister'),
+    array(),
+    array(),
+    '',
+    array(),
+    array("POST")
+));
+$app->addRoute("loginGET", new Route(
+    '/log-in',
+    array('controller' => 'AuthenticationController', 'method'=>'getLogin'),
+    array(),
+    array(),
+    '',
+    array(),
+    array("GET")
+));
+$app->addRoute("loginPOST", new Route(
+    '/log-in',
+    array('controller' => 'AuthenticationController', 'method'=>'postLogin'),
+    array(),
+    array(),
+    '',
+    array(),
+    array("POST")
+));
+$app->addRoute("privacyPolicy", new Route(
+    '/privacy-policy',
+    array('controller' => 'PagesController', 'method'=>'getPrivacyPolicy')
+));
+
+
+/* 
+    Error handling pages
+*/
+$app->addRoute("offline", new Route(
+    '/offline',
+    array('controller' => 'ErrorController', 'method'=>'getOfflinePage')
+));
+
+$app->addRoute("notFound", new Route(
+    '/404',
+    array('controller' => 'ErrorController', 'method'=>'getNotFoundPage')
+));
+
+$app->addRoute("internalError", new Route(
+    '/500',
+    array('controller' => 'ErrorController', 'method'=>'getInternalErrorPage')
+));
+
 
 if(session_status() === PHP_SESSION_NONE){
     session_start();
 }
+
 
 $app->run();
