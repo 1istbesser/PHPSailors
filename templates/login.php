@@ -12,9 +12,9 @@
             <div class="row">
                 <div class="col-lg-8 offset-md-2">
                     <h3 class="text-center">Sing in</h3>
-                    <form action="/register" method="POST">
+                    <form action="/log-in" method="POST">
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
+                        <label for="emailInput">Email address</label>
                         <input type="email" name="email" class="form-control" id="emailInput" aria-describedby="emailHelp" placeholder="Enter email">
                       </div>
                       <div class="form-group">

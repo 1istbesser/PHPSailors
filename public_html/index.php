@@ -58,19 +58,41 @@ $app = new Application();
 
 
 /* 
-    Front end pages
+    Pages for unauthenticated users
 */
 $app->addRoute("index", new Route(
     '/',
     array('controller' => 'PagesController', 'method'=>'getIndex')
 ));
-$app->addRoute("privacyPolicy", new Route(
+$app->addRoute("install", new Route(
     '/install',
     array('controller' => 'InstallController', 'method'=>'installApp')
 ));
+$app->addRoute("privacyPolicy", new Route(
+    '/privacy-policy',
+    array('controller' => 'PagesController', 'method'=>'getPrivacyPolicy')
+));
+
+
+/* 
+    Pages for authenticated users
+*/
+$app->addRoute("admin", new Route(
+    '/admin',
+    array('controller' => 'AdminController', 'method'=>'getIndex')
+));
+$app->addRoute("logout", new Route(
+    '/log-out',
+    array('controller' => 'AdminController', 'method'=>'doLogOut')
+));
+
+
+/* 
+    Register
+*/
 $app->addRoute("registerGET", new Route(
     '/register',
-    array('controller' => 'AuthenticationController', 'method'=>'getRegister'),
+    array('controller' => 'RegisterController', 'method'=>'getRegister'),
     array(),
     array(),
     '',
@@ -79,13 +101,17 @@ $app->addRoute("registerGET", new Route(
 ));
 $app->addRoute("registerPOST", new Route(
     '/register',
-    array('controller' => 'AuthenticationController', 'method'=>'postRegister'),
+    array('controller' => 'RegisterController', 'method'=>'postRegister'),
     array(),
     array(),
     '',
     array(),
     array("POST")
 ));
+
+/* 
+    Log in
+*/
 $app->addRoute("loginGET", new Route(
     '/log-in',
     array('controller' => 'AuthenticationController', 'method'=>'getLogin'),
@@ -103,10 +129,6 @@ $app->addRoute("loginPOST", new Route(
     '',
     array(),
     array("POST")
-));
-$app->addRoute("privacyPolicy", new Route(
-    '/privacy-policy',
-    array('controller' => 'PagesController', 'method'=>'getPrivacyPolicy')
 ));
 
 

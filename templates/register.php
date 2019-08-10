@@ -12,6 +12,7 @@
             <div class="row">
                 <div class="col-lg-8 offset-md-2">
                     <h3 class="text-center">Create a new account</h3>
+                    <?= !empty($this->get("msg")) ? $this->get("msg") : ""?>
                     <form action="/register" method="POST">
                       <div class="form-group">
                         <label for="exampleInputEmail1">Email address</label>

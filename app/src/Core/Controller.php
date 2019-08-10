@@ -20,24 +20,14 @@ class Controller{
         return $this->view;
     }
 
-    public function isLoggedIn(){
+    public function isLoggedIn($auth_token, $auth_token_db_obj){
         if(session_status() === PHP_SESSION_NONE){
             session_start();
         }
-        if( !isset($_SESSION['user']) || empty($_SESSION['user']) ){
-            header("location: /login");
+        if( !isset($auth_token) || empty($auth_token) || !isset($auth_token_db_obj) || empty($auth_token_db_obj->auth_token_db) || ($auth_token !== $auth_token_db_obj->auth_token_db)  ){
+            header("location: /log-in");
             exit;
-        }
+        } 
     }
 
-    public function isAuthorisedToConfigure(){
-        if(session_status() === PHP_SESSION_NONE){
-            session_start();
-        }
-        if($_SESSION['group'] === "admin"){
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

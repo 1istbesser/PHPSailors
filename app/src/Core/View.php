@@ -30,7 +30,7 @@ class View{
     }
 
     public function get($data_item){
-        return isset($this->data[$data_item]) ? $this->data[$data_item] : 'Data cannot be found';
+        return isset($this->data[$data_item]) ? $this->data[$data_item] : '';
     }
 
 }
