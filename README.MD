@@ -1,8 +1,5 @@
 # PHPSailors
 
-## Project structure
-![phpsailors-project-structure](/preview.png?raw=true "Preview image of the phpsailors project structure")
-
 ## Description
 
 ## Requirements
