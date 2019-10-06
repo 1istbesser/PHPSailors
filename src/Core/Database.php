@@ -30,8 +30,7 @@ class Database
         $this->setConfig();
     }
 
-    private function setConfig():void
-    {
+    private function setConfig():void {
         $this->dsn = "mysql:host=$this->host;dbname=$this->db;charset=$this->charset";
         $this->opt = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -45,8 +44,7 @@ class Database
      * @return Core\Database
      * Only one instance allowed.
      */
-    static function getInstance():Database
-    {
+    static function getInstance():Database {
         if (NULL == self::$database) {
             self::$database = new Database();
         }
@@ -56,20 +54,7 @@ class Database
     /**
      * @return PDO connection
      */
-    public function getConnection(): PDO
-    {
+    public function getConnection(): PDO {
         return $this->connection;
-    }
-
-    /**
-     * @return int = 1 if the connection works
-     */
-    public function checkConnection():Integer
-    {
-        $query = "Select 1";
-        $stmt = $this->connection->prepare($query);
-        $stmt->execute([]);
-        $result = $stmt->fetch();
-        return $result;
     }
 }

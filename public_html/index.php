@@ -11,11 +11,12 @@ use Symfony\Component\Routing\Route;
 */
 define('TEMPLATES', dirname(__DIR__).DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR);
 define('ADMINISTRATOREMAIL', "tamer.altintop@gmail.com");
+define('APPNAME', "PHPSailors");
 
 
 /*
     The application depends on a few components installed through Composer, therefore 
-    if you didn't run "composer install" within the /app directory of your project, 
+    if you didn't run "composer install" within the root directory of your project, 
     an internal error with a clear message should be the exit point. 
 */
 $internalServerErrorTemplate = "
@@ -25,11 +26,11 @@ $internalServerErrorTemplate = "
 ";
 
 
-if(file_exists('../app/vendor/autoload.php')){
-    require_once('../app/vendor/autoload.php');
+if(file_exists('../vendor/autoload.php')){
+    require_once('../vendor/autoload.php');
 } else {
     error_log("Error path: /public_html/index.php");
-    error_log("/app/vendor/autoload.php doesn't exist. Run composer install inside root/app of your app.");
+    error_log("/vendor/autoload.php doesn't exist. Run composer install inside root of your app.");
     echo $internalServerErrorTemplate;
     http_response_code(500);
     exit;
@@ -58,15 +59,11 @@ $app = new Application();
 
 
 /* 
-    Pages for unauthenticated users
+    Routes for unauthenticated users
 */
 $app->addRoute("index", new Route(
     '/',
     array('controller' => 'PagesController', 'method'=>'getIndex')
-));
-$app->addRoute("install", new Route(
-    '/install',
-    array('controller' => 'InstallController', 'method'=>'installApp')
 ));
 $app->addRoute("privacyPolicy", new Route(
     '/privacy-policy',
@@ -75,7 +72,7 @@ $app->addRoute("privacyPolicy", new Route(
 
 
 /* 
-    Pages for authenticated users
+    Routes for authenticated users
 */
 $app->addRoute("admin", new Route(
     '/admin',
@@ -88,7 +85,7 @@ $app->addRoute("logout", new Route(
 
 
 /* 
-    Register
+    Routes for register
 */
 $app->addRoute("registerGET", new Route(
     '/register',
@@ -110,7 +107,7 @@ $app->addRoute("registerPOST", new Route(
 ));
 
 /* 
-    Log in
+    Routes for log in
 */
 $app->addRoute("loginGET", new Route(
     '/log-in',
@@ -133,7 +130,7 @@ $app->addRoute("loginPOST", new Route(
 
 
 /* 
-    Error handling pages
+    Routes for errors handling pages
 */
 $app->addRoute("offline", new Route(
     '/offline',

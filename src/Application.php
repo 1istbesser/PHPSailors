@@ -39,18 +39,17 @@ class Application{
             }
 
         } catch (ResourceNotFoundException $e){
-            error_log($e->getMessage());
+            error_log($e);
             header("location: /404");
             exit;
         } catch(\Exception $e){
             error_log("Exception path: /app/src/Application.php");
-            error_log($e->getMessage());
             error_log($e);
             header("location: /500");
             exit;
         }catch(\Error $e){
             error_log("Error path: /app/src/Application.php");
-            error_log($e->getMessage());
+            error_log($e);
             header("location: /500");
             exit;
         }

@@ -13,6 +13,7 @@ class RegisterController extends Controller{
     }
 
     public function getRegister($parameters){
+
         if(isset($parameters['register']) && $parameters['register'] === '200'){
             $msg = "<p class='text-center text-success'>The account has been created successfully!</p>";
         } elseif(isset($parameters['register']) && $parameters['register'] === '409'){
@@ -20,6 +21,8 @@ class RegisterController extends Controller{
         } elseif(isset($parameters['register']) && $parameters['register'] === '500'){
             header("location: /500");
             exit;
+        } elseif(isset($parameters['register']) && $parameters['register'] === 'offline'){
+            $msg = "<p class='text-center text-danger'>Failed to create the account, the database is unavailable.</p>";
         } else {
             $msg = "";
         }
@@ -30,6 +33,13 @@ class RegisterController extends Controller{
     }
     
     public function postRegister($parameters){
+        $connected = $this->service->databaseConnectionEstablished();
+        
+        if(!$connected){
+            $this->getRegister(['register'=>'offline']);
+            exit;
+        }
+
         $email = $_POST['email'];
         $password = $_POST['password'];
         $registered = $this->service->registerUser($email, $password);

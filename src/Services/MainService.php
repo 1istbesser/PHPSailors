@@ -5,14 +5,12 @@ use PHPSailors\Core\Database;
 use PDO;
 
 class MainService extends Service{
-    private $database;
-    private $connection;
     const ACTIVE = "active";
     const INACTIVE = "inactive";
 
-    public function __construct(){   
-        $this->database = Database::getInstance();
-        $this->connection = $this->database->getConnection();
+    public function __construct()
+    {
+           
     }
 
 
@@ -23,7 +21,7 @@ class MainService extends Service{
             $password = password_hash($password, PASSWORD_DEFAULT);
 
             $query="SELECT COUNT(id_user) FROM `user` WHERE email=?";
-            $stmt = $this->connection->prepare($query);
+            $stmt = $this->getConnection()->prepare($query);
             $stmt->execute([ $email ]);
             $existentAccount = $stmt->fetchColumn();
 
@@ -33,7 +31,7 @@ class MainService extends Service{
             }
 
             $query = "INSERT INTO `user`(email, password, id_role, status, last_modified_at, created_at) VALUES(?,?,?,?,?,?);";
-            $stmt = $this->connection->prepare($query);
+            $stmt = $this->getConnection()->prepare($query);
             $stmt->execute([ $email, $password, $default_user_role, MainService::ACTIVE, $dateTimeNow, $dateTimeNow ]);
             return 200;
 
@@ -47,18 +45,18 @@ class MainService extends Service{
 
     public function deleteUser($email){
         $query="DELETE FROM `user` WHERE email=?";
-        $stmt = $this->connection->prepare($query);
+        $stmt = $this->getConnection()->prepare($query);
         $stmt->execute([ $email ]);
     }
 
     public function login($email, $password){
-        $query="SELECT id_user, password FROM `user` WHERE email=?";
-        $stmt = $this->connection->prepare($query);
+        $query="SELECT u.id_user, u.password, r.role as role FROM `user` u INNER JOIN `role` r ON u.id_role = r.id_role WHERE u.email=?";
+        $stmt = $this->getConnection()->prepare($query);
         $stmt->execute([ $email ]);
         $user = $stmt->fetchObject();
         $response = (Object)[
             "response_code" => "",
-            "auth_token" => "",
+            "role" => "",
             "id_user" => ""
         ];
 
@@ -69,12 +67,8 @@ class MainService extends Service{
         }
 
         if(password_verify($password, $user->password)){
-            $auth_token = $this->random_code(10);
-            $query="UPDATE `user` SET `auth_token` = ? WHERE email=?";
-            $stmt = $this->connection->prepare($query);
-            $stmt->execute([ $auth_token, $email ]);
             $response->response_code = 200;
-            $response->auth_token = $auth_token;
+            $response->role = $user->role;
             $response->id_user = $user->id_user;
             return $response;
             exit;
@@ -88,7 +82,7 @@ class MainService extends Service{
 
     function getAuthToken($id_user){
         $query="SELECT `auth_token` FROM `user` WHERE `id_user`=?";
-        $stmt = $this->connection->prepare($query);
+        $stmt = $this->getConnection()->prepare($query);
         $stmt->execute([ $id_user ]);
         $auth_token_db = $stmt->fetchColumn();
         $response = (Object)[
@@ -107,7 +101,7 @@ class MainService extends Service{
 
     function logout($id_user, $auth_token){
         $query="UPDATE `user` SET `auth_token` = ? WHERE `id_user`=? && auth_token=?";
-        $stmt = $this->connection->prepare($query);
+        $stmt = $this->getConnection()->prepare($query);
         $stmt->execute([ '', $id_user, $auth_token ]);
     }
 

@@ -8,6 +8,7 @@ class Controller{
     {   
 
     }
+    
     public function setView():void{
         $this->view = new View();
     }
@@ -20,11 +21,11 @@ class Controller{
         return $this->view;
     }
 
-    public function isLoggedIn($auth_token, $auth_token_db_obj){
+    public function isLoggedInAs($group){
         if(session_status() === PHP_SESSION_NONE){
-            session_start();
-        }
-        if( !isset($auth_token) || empty($auth_token) || !isset($auth_token_db_obj) || empty($auth_token_db_obj->auth_token_db) || ($auth_token !== $auth_token_db_obj->auth_token_db)  ){
+            header("location: /log-in");
+            exit;
+        } else if( !isset($_SESSION['id_user']) || !isset($_SESSION['role']) || $_SESSION['role'] !== $group ){
             header("location: /log-in");
             exit;
         } 

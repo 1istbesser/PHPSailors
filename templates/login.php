@@ -11,7 +11,8 @@
         <div class="container my-5">
             <div class="row">
                 <div class="col-lg-8 offset-md-2">
-                    <h3 class="text-center">Sing in</h3>
+                    <h3 class="text-center">Sign in</h3>
+                    <?= !empty($this->get("msg")) ? $this->get("msg") : ""?>
                     <form action="/log-in" method="POST">
                       <div class="form-group">
                         <label for="emailInput">Email address</label>
