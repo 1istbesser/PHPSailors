@@ -80,7 +80,7 @@ $app->addRoute("admin", new Route(
 ));
 $app->addRoute("logout", new Route(
     '/log-out',
-    array('controller' => 'AdminController', 'method'=>'doLogOut')
+    array('controller' => 'AuthenticationController', 'method'=>'doLogOut')
 ));
 
 

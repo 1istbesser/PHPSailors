@@ -31,4 +31,14 @@ class Controller{
         } 
     }
 
+    public function isLoggedIn(){
+        if(session_status() === PHP_SESSION_NONE){
+            header("location: /log-in");
+            exit;
+        } else if( !isset($_SESSION['id_user']) || !isset($_SESSION['role']) ){
+            header("location: /log-in");
+            exit;
+        } 
+    }
+
 }

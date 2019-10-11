@@ -11,7 +11,7 @@ class AdminController extends Controller{
     public function __construct()
     {
         parent::__construct();
-        $this->isLoggedInAs(AdminController::ADMIN);
+        $this->isLoggedIn();
         $this->service = new MainService();
     }
 
