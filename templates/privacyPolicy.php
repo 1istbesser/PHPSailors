@@ -2,7 +2,7 @@
 <html>
     <head>
         <?php require_once('_head.php'); ?>
-        <title>PHPSailors - Privacy Policy page</title>
+        <title><?= APPNAME ?> - Privacy Policy page</title>
     </head>
     <body>
 
@@ -11,7 +11,7 @@
         <div class="container my-5">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="text-center">Privacy Policy of PHPSailors</h3>
+                    <h3 class="text-center">Privacy Policy of <?= APPNAME ?></h3>
                     <p>
                         Insert privacy policy here
                     </p>

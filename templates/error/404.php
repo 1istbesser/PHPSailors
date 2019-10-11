@@ -2,7 +2,7 @@
 <html>
     <head>
         <?php require_once(TEMPLATES.'_head.php'); ?>
-        <title>PHPSailors - Index page</title>
+        <title><?= APPNAME ?> - Index page</title>
     </head>
     <body>
 

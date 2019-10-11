@@ -10,10 +10,11 @@ function createTables($connection){
   try{
     $query= "CREATE TABLE IF NOT EXISTS `user`(
         id_user int NOT NULL UNIQUE AUTO_INCREMENT,
+        first_name varchar(45),
+        last_name varchar(45),
         email varchar(100) UNIQUE,
         password varchar(255),
         id_role int,
-        auth_token varchar(255),
         status varchar(50),
         last_modified_at datetime,
         created_at datetime,
@@ -72,12 +73,15 @@ function registerAdmin($connection){
     if(0 === (int)$adminCounter){
         $dateTimeNow = date("Y-m-d H:m:i");
         $email = "admin@phpsailors.com";
+        $firstName = "PHPSailors";
+        $lastName = "Admin";
         $random_password = random_code(10);
         $random_password_encrypted = password_hash($random_password, PASSWORD_DEFAULT);
         $account_role = 2;
-        $query = "INSERT INTO `user`(email, password, id_role, status, last_modified_at, created_at) VALUES(?,?,?,?,?,?);";
+        $query = "INSERT INTO `user`(first_name, last_name, email, password, id_role, status, last_modified_at, created_at) VALUES(?,?,?,?,?,?,?,?);";
         $stmt = $connection->prepare($query);
-        $stmt->execute([ $email, $random_password_encrypted, $account_role, ACTIVE, $dateTimeNow, $dateTimeNow ]);
+        $firstName = "PHPSailors";
+        $stmt->execute([ $firstName, $lastName, $email, $random_password_encrypted, $account_role, ACTIVE, $dateTimeNow, $dateTimeNow ]);
         return (Object)[
             "email" => $email,
             "password" => $random_password

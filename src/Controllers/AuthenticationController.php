@@ -13,15 +13,27 @@ class AuthenticationController extends Controller{
     }
 
     public function getLogin($parameters){
+        $loggedIn = $this->isLoggedIn();
+        if($loggedIn){
+            header("location: /admin");
+            exit;
+        }
+
         $msg = "";
 
         if(isset($parameters['login']) && $parameters['login'] === 'offline'){
-            $msg = "<p class='text-center text-danger'>Failed to log in, the database is unavailable.</p>";
+            $msg = "offline";
         } 
+
+        if(isset($parameters['login']) && $parameters['login'] === '404'){
+            $msg = '404';
+        } elseif(isset($parameters['login']) && $parameters['login'] === '403'){
+            $msg = '403';
+        }
 
         $this->setView();
         $this->renderview('login', [
-            "msg" => $msg
+            'msg' => $msg
         ]);
     }
 
@@ -48,6 +60,8 @@ class AuthenticationController extends Controller{
             } elseif(200 === (int)$authentication_result->response_code){
                 $_SESSION['id_user'] = $authentication_result->id_user;
                 $_SESSION['role'] = $authentication_result->role;
+                $_SESSION['first_name'] = $authentication_result->first_name;
+                $_SESSION['last_name'] = $authentication_result->last_name;
                 header("location: /admin");
                 exit;
             }   

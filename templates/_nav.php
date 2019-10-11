@@ -1,11 +1,11 @@
 <?php 
 $authenticated = false;
-if(isset($_SESSION['a_t'])){
+if(isset($_SESSION['id_user'])){
   $authenticated = true;
 }
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <a class="navbar-brand" href="/">PHPSailors | </a>
+  <a class="navbar-brand" href="/"><?= APPNAME ?> | </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMainMenu" aria-controls="navbarMainMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>

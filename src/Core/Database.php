@@ -17,8 +17,7 @@ class Database
     private static $database = NULL;
     private $config = NULL;
 
-    private function __construct()
-    {
+    private function __construct(){
         /**
          * Set all config params from src\Config
          */

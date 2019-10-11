@@ -2,7 +2,7 @@
 <html>
     <head>
         <?php require_once('_head.php'); ?>
-        <title>PHPSailors - Register page</title>
+        <title><?= APPNAME ?> - Register page</title>
     </head>
     <body>
 
@@ -10,8 +10,8 @@
 
         <div class="container my-5">
             <div class="row">
-                <div class="col-lg-8 offset-md-2">
-                    <h3 class="text-center">Create a new account</h3>
+                <div class="col-lg-4 offset-md-4">
+                    <h3 class="text-center mb-3">Create a new account</h3>
                     <?= !empty($this->get("msg")) ? $this->get("msg") : ""?>
                     <form action="/register" method="POST">
                       <div class="form-group">

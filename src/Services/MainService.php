@@ -8,8 +8,7 @@ class MainService extends Service{
     const ACTIVE = "active";
     const INACTIVE = "inactive";
 
-    public function __construct()
-    {
+    public function __construct(){
            
     }
 
@@ -44,65 +43,54 @@ class MainService extends Service{
     }
 
     public function deleteUser($email){
-        $query="DELETE FROM `user` WHERE email=?";
-        $stmt = $this->getConnection()->prepare($query);
-        $stmt->execute([ $email ]);
+        try{
+            $query="DELETE FROM `user` WHERE email=?";
+            $stmt = $this->getConnection()->prepare($query);
+            $stmt->execute([ $email ]);
+            return 200;
+        } catch(\Exception $e){
+            error_log($e);
+            return 500;
+            exit;
+        }
     }
 
     public function login($email, $password){
-        $query="SELECT u.id_user, u.password, r.role as role FROM `user` u INNER JOIN `role` r ON u.id_role = r.id_role WHERE u.email=?";
-        $stmt = $this->getConnection()->prepare($query);
-        $stmt->execute([ $email ]);
-        $user = $stmt->fetchObject();
-        $response = (Object)[
-            "response_code" => "",
-            "role" => "",
-            "id_user" => ""
-        ];
+        try{
+            $query="SELECT u.first_name, u.last_name, u.id_user, u.password, r.role as role FROM `user` u INNER JOIN `role` r ON u.id_role = r.id_role WHERE u.email=?";
+            $stmt = $this->getConnection()->prepare($query);
+            $stmt->execute([ $email ]);
+            $user = $stmt->fetchObject();
 
-        if(false === $user->password){
-            $response->response_code = 404;
+            $response = (Object)[
+                "id_user" => "",
+                "role" => "",
+                "response_code" => ""
+            ];
+
+            if(false === $user){
+                $response->response_code = 404;
+            } else {
+                if(password_verify($password, $user->password)){
+                    $response->id_user = $user->id_user;
+                    $response->role = $user->role;
+                    $response->first_name = $user->first_name;
+                    $response->last_name = $user->last_name;
+                    $response->response_code = 200;
+                } else {
+                    $response->response_code = 403;
+                }
+            }
+
             return $response;
+            exit;
+
+        } catch(\Exception $e){
+            error_log($e);
+            return 500;
             exit;
         }
 
-        if(password_verify($password, $user->password)){
-            $response->response_code = 200;
-            $response->role = $user->role;
-            $response->id_user = $user->id_user;
-            return $response;
-            exit;
-        } else {
-            $response->response_code = 403;
-            return $response;
-            exit;
-        }
-
-    }
-
-    function getAuthToken($id_user){
-        $query="SELECT `auth_token` FROM `user` WHERE `id_user`=?";
-        $stmt = $this->getConnection()->prepare($query);
-        $stmt->execute([ $id_user ]);
-        $auth_token_db = $stmt->fetchColumn();
-        $response = (Object)[
-            'response_code' => "",
-            'auth_token_db' => ""
-        ];
-        if(false === $auth_token_db){
-            $response->response_code = 403;
-        } else {
-            $response->response_code = 200;
-            $response->auth_token_db = $auth_token_db;
-        }
-
-        return $response;
-    }
-
-    function logout($id_user, $auth_token){
-        $query="UPDATE `user` SET `auth_token` = ? WHERE `id_user`=? && auth_token=?";
-        $stmt = $this->getConnection()->prepare($query);
-        $stmt->execute([ '', $id_user, $auth_token ]);
     }
 
     function random_code($limit){

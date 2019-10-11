@@ -4,8 +4,7 @@ use PHPSailors\Core\Controller;
 
 class ErrorController extends Controller{
     
-    public function __construct()
-    {
+    public function __construct(){
         parent::__construct();
     }
 
