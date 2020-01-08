@@ -39,7 +39,6 @@ class Application{
             }
 
         } catch (ResourceNotFoundException $e){
-            error_log($e);
             header("location: /404");
             exit;
         } catch(\Exception $e){
