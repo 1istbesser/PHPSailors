@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PHPSailors\Core;
+namespace App\Core;
 
-class Service
+class DatabaseConnection
 {
     private $database;
     private $connection;
@@ -29,10 +29,7 @@ class Service
         return $this->connection;
     }
 
-    public function generateRandomCode($limit)
-    {
-        return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
-    }
+
 
     public function databaseConnectionEstablished()
     {
